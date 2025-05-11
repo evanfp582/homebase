@@ -15,8 +15,9 @@ def connect_to_GridFS():
       GridFS: The GridFS 
   """
   MONGO_HOST = os.getenv("MONGO_HOST")
+  DATABASE_NAME = os.getenv("DATABASE_NAME")
   myclient = pymongo.MongoClient(MONGO_HOST)
-  gridfsDB = myclient["test"]
+  gridfsDB = myclient[DATABASE_NAME]
   fs = gridfs.GridFS(gridfsDB)
   return fs
 
