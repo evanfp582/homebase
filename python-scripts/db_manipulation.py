@@ -22,7 +22,7 @@ print(dblist)
 if DATABASE_NAME in dblist:
   print("The database exists.")
   # Find the file
-  grid_out = fs.find_one({'filename': 'RedneckSafari.jpg'})
+  grid_out = fs.find_one({'filename': '20250504_021137.jpg'})
   image = Image.open(BytesIO(grid_out.read()))
   image.show()
 else:
