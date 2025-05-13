@@ -1,38 +1,42 @@
-import mongoose from "mongoose";
-import Image from "./model/Image.js";
-import express from "express";
-import cors from "cors"
+const express = require("express");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const { GridFSBucket } = require("mongodb");
+const { Readable } = require("stream");
 
-import dotenv from "dotenv";
 dotenv.config({path: '../.env'});
-
 const app = express();
 const port = 5000;
-
 app.use(cors());
 
-const data = [
-  { id: 1, name: "Item 1" },
-  { id: 2, name: "Item 2" },
-];
+let gfs;
 
-app.get("/api/items", (req, res) => {
-  res.json(data);
+mongoose.connect(process.env.MONGO_HOST_AND_NAME);
+
+const conn = mongoose.connection;
+
+conn.once("open", () => {
+  gfs = new GridFSBucket(conn.db, {
+    bucketName: "fs"
+  });
+  console.log("GridFS ready");
 });
- 
-async function main(){
 
-  const uri = process.env.MONGO_HOST_AND_NAME
-
-  mongoose.connect(uri)
-
-  const pic = await Image.findOne({filename: "20230430_173828.jpg"}).exec();
-
-  console.log(pic);
-}
-
-main().catch(console.error);
+// Route: GET /image/:filename
+app.get("/image/:filename", (req, res) => {
+  if (!gfs) {
+    return res.status(500).send("GridFS not initialized yet");
+  }
+  console.log("Getting ", req.params.filename);
+  
+  const fileStream = gfs.openDownloadStreamByName(req.params.filename);
+  fileStream.on("error", () => {
+    res.status(404).send("File not found");
+  });
+  fileStream.pipe(res);
+});
 
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Backend running on http://localhost:${port}`);
 });

@@ -1,25 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import "./App.css";
 
 function App() {
-  const [items, setItems] = useState([]);
+  const [filename, setFilename] = useState("");
+  const [imgSrc, setImgSrc] = useState("");
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/items")
-      .then((response) => response.json())
-      .then((data) => setItems(data));
-  }, []);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setImgSrc(`http://localhost:5000/image/${filename}`);
+  };
 
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Items</h1>
-        <ul>
-          {items.map((item) => (
-            <li key={item.id}>{item.name}</li>
-          ))}
-        </ul>
-      </header>
+      <h1>GridFS Image Viewer</h1>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={filename}
+          onChange={(e) => setFilename(e.target.value)}
+          placeholder="Enter image filename"
+        />
+        <button type="submit">View Image</button>
+      </form>
+      {imgSrc && (
+        <div>
+          <h2>Result:</h2>
+          <img
+            src={imgSrc}
+            alt="Requested GridFS"
+            style={{ maxWidth: "100%", height: "auto", marginTop: "20px" }}
+          />
+        </div>
+      )}
     </div>
   );
 }
