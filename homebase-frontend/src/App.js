@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
+import ImageCard from "./components/image_card";
+import { Grid, Card, CardContent, Typography, Button, Box } from "@mui/material";
+
 
 function App() {
   const [filename, setFilename] = useState("");
@@ -13,7 +17,9 @@ function App() {
 
   return (
     <div className="App">
-      <h1>GridFS Image Viewer</h1>
+      <Typography variant="h1" color="primary" sx={{ fontWeight: "bold" }}>
+        Evan Images
+      </Typography>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -29,10 +35,12 @@ function App() {
           <img
             src={imgSrc}
             alt="Requested GridFS"
-            style={{ maxWidth: "100%", height: "auto", marginTop: "20px" }}
+            // style={{ maxWidth: "100%", height: "auto", marginTop: "20px" }}
+            style={{ height:550, marginTop: "20px" }}
           />
         </div>
       )}
+      <ImageCard />
     </div>
   );
 }

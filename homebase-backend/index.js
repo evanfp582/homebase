@@ -25,9 +25,6 @@ conn.once("open", () => {
 
 // Route: GET /image/:filename
 app.get("/image/:filename", (req, res) => {
-  if (!gfs) {
-    return res.status(500).send("GridFS not initialized yet");
-  }
   console.log("Getting ", req.params.filename);
   
   const fileStream = gfs.openDownloadStreamByName(req.params.filename);
@@ -35,6 +32,29 @@ app.get("/image/:filename", (req, res) => {
     res.status(404).send("File not found");
   });
   fileStream.pipe(res);
+});
+
+// Route: GET /image/id/:fileid
+app.get("/image/id/:fileId", (req, res) => {
+  console.log("Getting ", req.params.fileId);
+  
+  const fileStream = gfs.openDownloadStream(new mongoose.Types.ObjectId(req.params.fileId));
+  fileStream.on("error", () => {
+    res.status(404).send("File not found");
+  });
+  fileStream.pipe(res);
+});
+
+// Route: GET /findall
+app.get("/findall/:limit", async (req, res) => {
+  const limit = Number(req.params.limit)
+  let results = []
+  const cursor = gfs.find({}).limit(limit);
+  for await (const doc of cursor) {
+    console.log(doc);
+    results.push(doc)
+  }
+  res.send(results)
 });
 
 app.listen(port, () => {
