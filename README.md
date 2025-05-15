@@ -25,3 +25,9 @@ I have basic website set up 100 times, but I feel like I always follow a differe
 
 
 Getting Mongoose and Node JS to play nicely took this guide https://www.mongodb.com/developer/languages/javascript/getting-started-with-mongodb-and-mongoose/  
+
+### Python
+I have written a few scripts 
+This new one that I am going to make is super fun-
+Since these images are super large, I am going to be making compressed versions of each photo to display on the page and then the real version will be shown if you click on it
+I know for sure there exists plenty of avaliable code online to compress an image, BUT, since I just finished my computer vision class, I am going to make my own compressed image by running a filter through the images.
