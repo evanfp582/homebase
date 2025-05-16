@@ -6,6 +6,7 @@ Hold media in local Linux server because both google and my C drive is yelling a
 ### Linus Server
 I am learning a bunch of small things. I will document them here so when I get stuck somewhere in teh future I can look back here to get unstuck.  
 Activating a Linux venv in python is source venv/bin/activate.  
+I learned that OpenCV (understandably) need to use a special verison if you are using an oporating system without a GUI. So that was a little bug that I needed to correct. 
 
 ### MongoDB
 I am learning how to set up, host, run, and manage a MongoDB  
