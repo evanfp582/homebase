@@ -18,17 +18,33 @@ mongosh
 ```
 I am not sure why mongod or anything else fails, but I will need to correct this eventually.  
 
+the way the previously mentioend mongosh works is it allows you to enter commandline input into the background running mongod process  
+The way you run the mongod process (if it for whatever reason shut down)  
+
+```cmd
+sudo systemctl start mongod
+```
+and check it with 
+```cmd
+sudo systemctl status mongod
+```
+If it giving you errors when starting mongod try manually removing the stale socket file with 
+```cmd
+sudo rm /tmp/mongodb-27017.sock
+```
+I am not sure why this does this, this was an error that AI helped me solve :(  
+
 ### Full stack 
 React JS frontend   
 Node JS backend with Express JS and Mongoose for MongoDB Schemas and nodemon.  
-followed this guide to set up https://www.einfochips.com/blog/building-a-full-stack-application-with-react-js-and-node-js/. 
+followed this guide to set up https://www.einfochips.com/blog/building-a-full-stack-application-with-react-js-and-node-js/.  
 I have basic website set up 100 times, but I feel like I always follow a different set of commands/guides.  
 
 
 Getting Mongoose and Node JS to play nicely took this guide https://www.mongodb.com/developer/languages/javascript/getting-started-with-mongodb-and-mongoose/  
 
 ### Python
-I have written a few scripts 
-This new one that I am going to make is super fun-
-Since these images are super large, I am going to be making compressed versions of each photo to display on the page and then the real version will be shown if you click on it
+I have written a few scripts  
+This new one that I am going to make is super fun-  
+Since these images are super large, I am going to be making compressed versions of each photo to display on the page and then the real version will be shown if you click on it  
 I know for sure there exists plenty of avaliable code online to compress an image, BUT, since I just finished my computer vision class, I am going to make my own compressed image by running a filter through the images.
