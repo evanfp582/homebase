@@ -48,3 +48,17 @@ I have written a few scripts
 This new one that I am going to make is super fun-  
 Since these images are super large, I am going to be making compressed versions of each photo to display on the page and then the real version will be shown if you click on it  
 I know for sure there exists plenty of avaliable code online to compress an image, BUT, since I just finished my computer vision class, I am going to make my own compressed image by running a filter through the images.
+
+
+# Todo List
+Gotta love the old trusty todo list to keep track of things to do with this assignement. It worked really well for keeping me on task for my portfolio website, it should be good here too!
+## Storage
+I want to create a way to keep a view large images to keep google from begging me to upgrade my plan
+- [X] MongoDB backend hosted on local linux server
+- [X] Use GridFS to store my very large photos
+- [X] Hit my images using a NodeJS backend
+- [X] Basic React frontend to also get images
+- [X] Make thumbnails of each large image
+- [ ] Be able to view all image names and thumbnails at once
+- [ ] Once thumbnail is selected, that is when the full size image is loaded
+- [ ] Search through images??? Not sure what I even want to search by      
