@@ -1,5 +1,6 @@
 # homebase_storage
 Hold media in local Linux server because both google and my C drive is yelling at me to free some space.
+This project helps me learn Linux, networking, Mongo, full stack work, design, image manipulation...
 
 ## Learning 
 
@@ -61,4 +62,5 @@ I want to create a way to keep a view large images to keep google from begging m
 - [X] Make thumbnails of each large image
 - [X] Be able to view all image names and thumbnails at once
 - [ ] Once thumbnail is selected, that is when the full size image is loaded
-- [ ] Search through images??? Not sure what I even want to search by      
+- [ ] Search through images??? Not sure what I even want to search by
+- [ ] Maybe I ought to do some actual design now to make it look less ugly perhaps I should sketch out a design that I like  
