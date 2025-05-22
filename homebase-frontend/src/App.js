@@ -1,10 +1,8 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from "react";
 import "./App.css";
 import ImageCard from "./components/image_card";
-import { Grid, Card, CardContent, Typography, Button, Box } from "@mui/material";
-
+import { Typography } from "@mui/material";
 
 function App() {
   const [filename, setFilename] = useState("");
@@ -35,7 +33,6 @@ function App() {
           <img
             src={imgSrc}
             alt="Requested GridFS"
-            // style={{ maxWidth: "100%", height: "auto", marginTop: "20px" }}
             style={{ height:550, marginTop: "20px" }}
           />
         </div>

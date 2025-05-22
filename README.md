@@ -59,6 +59,6 @@ I want to create a way to keep a view large images to keep google from begging m
 - [X] Hit my images using a NodeJS backend
 - [X] Basic React frontend to also get images
 - [X] Make thumbnails of each large image
-- [ ] Be able to view all image names and thumbnails at once
+- [X] Be able to view all image names and thumbnails at once
 - [ ] Once thumbnail is selected, that is when the full size image is loaded
 - [ ] Search through images??? Not sure what I even want to search by      

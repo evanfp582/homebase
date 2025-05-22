@@ -26,10 +26,11 @@ conn.once("open", () => {
   console.log("thumbnails collection ready");
 });
 
+/*
+Routes relating to full sized images in the Mongo GridFS
+*/
 // Route: GET /image/:filename
-app.get("/image/:filename", (req, res) => {
-  console.log("Getting ", req.params.filename);
-  
+app.get("/image/:filename", (req, res) => {  
   const fileStream = gfs.openDownloadStreamByName(req.params.filename);
   fileStream.on("error", () => {
     res.status(404).send("File not found");
@@ -37,10 +38,8 @@ app.get("/image/:filename", (req, res) => {
   fileStream.pipe(res);
 });
 
-// Route: GET /image/id/:fileid
-app.get("/image/id/:fileId", (req, res) => {
-  console.log("Getting ", req.params.fileId);
-  
+// Route: GET an image by fileId
+app.get("/image/id/:fileId", (req, res) => {  
   const fileStream = gfs.openDownloadStream(new mongoose.Types.ObjectId(req.params.fileId));
   fileStream.on("error", () => {
     res.status(404).send("File not found");
@@ -48,10 +47,23 @@ app.get("/image/id/:fileId", (req, res) => {
   fileStream.pipe(res);
 });
 
+// Route: GET all images with a limit of 10
+app.get("/findall/:limit", async (req, res) => {
+  const limit = Number(req.params.limit)
+  let results = []
+  const cursor = gfs.find({}).limit(limit);
+  for await (const doc of cursor) {
+    results.push(doc)
+  } 
+  res.send(results)
+});
+
+/*
+Routes relating to getting thumbnails 
+*/
+// Route: GET a thumbnail by Id of original photo
 app.get("/thumb/id/:originalId", async (req, res) => {
-  try {
-    console.log("Getting Thumbnail for ID: ", req.params.originalId);
-    
+  try {    
     const thumbnailDoc = await thumbnailsCollection
       .findOne({"originalFileId": new mongoose.Types.ObjectId(req.params.originalId)})    
     const buffer = thumbnailDoc.thumbnail.buffer;
@@ -62,27 +74,17 @@ app.get("/thumb/id/:originalId", async (req, res) => {
     res.status(500).send('Error fetching thumbnails');
   }
 });
-  
+
+// Route: GET all thumbnails
 app.get('/thumbnails', async (req, res) => {
   try {
     const thumbnails = await thumbnailsCollection
-      .find({}, { projection: { thumbnail: 0 } })
+      .find({})
       .toArray();
     res.json(thumbnails);
   } catch (err) {
     res.status(500).send('Error fetching thumbnails');
   }
-});
-
-app.get("/findall/:limit", async (req, res) => {
-  const limit = Number(req.params.limit)
-  let results = []
-  const cursor = gfs.find({}).limit(limit);
-  for await (const doc of cursor) {
-    console.log(doc);
-    results.push(doc)
-  } 
-  res.send(results)
 });
 
 app.listen(port, () => {
