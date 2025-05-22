@@ -1,8 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import "./App.css";
-import ImageCard from "./components/image_card";
+import ImageCard from "./components/ImageGrid";
 import { Typography } from "@mui/material";
+import Separator from "./components/Separator";
 
 function App() {
   const [filename, setFilename] = useState("");
@@ -15,7 +16,8 @@ function App() {
 
   return (
     <div className="App">
-      <Typography variant="h1" color="primary" sx={{ fontWeight: "bold" }}>
+      <div style={{"min-height":"100vh"}}>
+      <Typography variant="h1" sx={{ fontWeight: "bold" }}>
         Evan Images
       </Typography>
       <form onSubmit={handleSubmit}>
@@ -28,15 +30,14 @@ function App() {
         <button type="submit">View Image</button>
       </form>
       {imgSrc && (
-        <div>
-          <h2>Result:</h2>
-          <img
-            src={imgSrc}
-            alt="Requested GridFS"
-            style={{ height:550, marginTop: "20px" }}
-          />
-        </div>
+        <img
+          src={imgSrc}
+          alt="Requested GridFS"
+          style={{ height:"80vh", marginTop: "20px" }}
+        />
       )}
+      </div>
+      < Separator />
       <ImageCard />
     </div>
   );
