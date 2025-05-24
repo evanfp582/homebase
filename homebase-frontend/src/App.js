@@ -1,45 +1,79 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, createContext } from "react";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import "./App.css";
 import ImageCard from "./components/ImageGrid";
-import { Typography } from "@mui/material";
 import Separator from "./components/Separator";
+import Navbar from "./components/Navbar";
+import FullImage from "./components/FullImage";
+
+export const ThemeContext = createContext();
+
+const initialTheme = {
+  primaryColor: { r: 198, g: 40, b: 40 },
+  secondaryColor: { r: 239, g: 108, b: 0 },
+  textColor: { r: 238, g: 238, b: 238 },
+  secondaryTextColor: { r: 97, g: 97, b: 97 },
+  backgroundColor: { r: 238, g: 238, b: 238 },
+  paperColor: {r: 224, g: 224, b: 224}
+}
 
 function App() {
-  const [filename, setFilename] = useState("");
-  const [imgSrc, setImgSrc] = useState("");
+  const [primaryColor, setPrimaryColor] = useState(initialTheme.primaryColor);
+  const [secondaryColor, setSecondaryColor] = useState(initialTheme.secondaryColor);
+  const [textColor, setTextColor] = useState(initialTheme.textColor);
+  const [secondaryTextColor, setSecondaryTextColor] = useState(initialTheme.secondaryTextColor);
+  const [backgroundColor, setBackgroundColor] = useState(initialTheme.backgroundColor);
+  const [paperColor, setPaperColor] = useState(initialTheme.paperColor)
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setImgSrc(`http://localhost:5000/image/${filename}`);
-  };
+  const [selectedFilename, setSelectedFilename] = useState(null);
+
+  const theme = createTheme({
+    palette: {
+      mode: "light",
+      primary: {
+        main: `rgb(${primaryColor.r}, ${primaryColor.g}, ${primaryColor.b})`,
+      },
+      secondary: {
+        main: `rgb(${secondaryColor.r}, ${secondaryColor.g}, ${secondaryColor.b})`,
+      },
+      text: {
+        header: `rgb(${textColor.r}, ${textColor.g}, ${textColor.b})`,
+        secondary: `rgb(${secondaryTextColor.r}, ${secondaryTextColor.g}, ${secondaryTextColor.b})`,
+      },
+      error: {
+        main: "#9c9c9c",
+      },
+      warning: {
+        main: "#e8df56",
+      },
+      background: {
+        default: `rgb(${backgroundColor.r}, ${backgroundColor.g}, ${backgroundColor.b})`,
+        paper: `rgb(${paperColor.r}, ${paperColor.g}, ${paperColor.b})`,
+      },
+    },
+    typography: {
+      fontFamily: "Oswald",
+    },
+  });
 
   return (
-    <div className="App">
-      <div style={{"min-height":"100vh"}}>
-      <Typography variant="h1" sx={{ fontWeight: "bold" }}>
-        Evan Images
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={filename}
-          onChange={(e) => setFilename(e.target.value)}
-          placeholder="Enter image filename"
-        />
-        <button type="submit">View Image</button>
-      </form>
-      {imgSrc && (
-        <img
-          src={imgSrc}
-          alt="Requested GridFS"
-          style={{ height:"80vh", marginTop: "20px" }}
-        />
-      )}
-      </div>
-      < Separator />
-      <ImageCard />
-    </div>
+    <ThemeContext.Provider value={{ 
+      setPrimaryColor, primaryColor,
+      setSecondaryColor, secondaryColor,
+      setTextColor, textColor,
+      setSecondaryTextColor, secondaryTextColor,
+      setBackgroundColor, backgroundColor,
+      setPaperColor, paperColor
+    }}>
+      <ThemeProvider theme={theme}>
+        <div className="App" style={{backgroundColor: 'rgb(238, 238, 238)'}}>
+          <Navbar setFullFilename={setSelectedFilename}/>
+          <FullImage filename={selectedFilename}/>
+          <Separator />
+          <ImageCard />
+        </div>
+      </ThemeProvider>
+    </ThemeContext.Provider>
   );
 }
 
