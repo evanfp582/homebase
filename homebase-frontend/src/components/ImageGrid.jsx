@@ -1,11 +1,13 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Grid, Card, CardContent, Typography, Box } from "@mui/material";
+import CardActionArea from '@mui/material/CardActionArea';
 import axios from "axios";
 
-const ImageCard = () => {
+const ImageGrid = ({setFullFilename}) => {
   const [allImgData, setAllImgData] = useState([]);
   const [thumbDict, setThumbDict] = useState(null);
+  const [localFilename, setLocalFilename] = useState("");
 
   useEffect(() => {
     const fetchAllThumbnails = async () => {
@@ -18,6 +20,17 @@ const ImageCard = () => {
     };
     fetchAllThumbnails();
   }, []);
+
+  const handleClick = (fullFilename) => {
+    // e.preventDefault();
+    setFullFilename(fullFilename);
+    setLocalFilename(fullFilename);
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,7 +55,19 @@ const ImageCard = () => {
       {allImgData && allImgData.map((image, index) => (
         <Grid item md={3} size={2} key={index}>
           <Card>
-            <CardContent>
+          <CardActionArea
+            onClick={() => handleClick(image.filename)}
+            data-active={localFilename === image.filename ? true : undefined}
+            sx={{
+              height: '100%',
+              '&[data-active]': {
+                backgroundColor: 'action.selected',
+                '&:hover': {
+                  backgroundColor: 'action.selectedHover',
+                },
+              },
+            }}
+          ><CardContent>
               <Typography sx={{ textAlign: "center" }}>
                 {image.filename}
               </Typography>
@@ -55,7 +80,7 @@ const ImageCard = () => {
                   alt="Thumbnail"></img>
                 : <p>Thumbnail Not Found.</p>
               }
-            </CardContent>
+            </CardContent></CardActionArea>
           </Card>
         </Grid>
       ))}
@@ -74,4 +99,4 @@ function arrayToDict(thumbnailsArray) {
 }
 
 
-export default ImageCard
+export default ImageGrid

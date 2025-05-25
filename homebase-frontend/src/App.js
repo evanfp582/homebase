@@ -1,10 +1,10 @@
 import React, { useState, createContext } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import "./App.css";
-import ImageCard from "./components/ImageGrid";
 import Separator from "./components/Separator";
 import Navbar from "./components/Navbar";
 import FullImage from "./components/FullImage";
+import ImageGrid from "./components/ImageGrid";
 
 export const ThemeContext = createContext();
 
@@ -70,7 +70,7 @@ function App() {
           <Navbar setFullFilename={setSelectedFilename}/>
           <FullImage filename={selectedFilename}/>
           <Separator />
-          <ImageCard />
+          <ImageGrid setFullFilename={setSelectedFilename}/>
         </div>
       </ThemeProvider>
     </ThemeContext.Provider>
