@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Typography } from "@mui/material";
 import AppBar from '@mui/material/AppBar';
+import Login from "./Login";
 
 const Navbar = ({setFullFilename}) => {
   const [filename, setFilename] = useState("");
@@ -30,6 +31,7 @@ const Navbar = ({setFullFilename}) => {
         />
         <button type="submit">View Image</button>
       </form>
+      <Login />
     </AppBar>
   )
 }

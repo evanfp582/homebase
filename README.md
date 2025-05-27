@@ -50,6 +50,10 @@ This new one that I am going to make is super fun-
 Since these images are super large, I am going to be making compressed versions of each photo to display on the page and then the real version will be shown if you click on it  
 I know for sure there exists plenty of available code online to compress an image, BUT, since I just finished my computer vision class, I am going to make my own compressed image by running a filter through the images.
 
+Ok writing this generalized Mongo manipulation script is a bit of a mess.  
+I am trying to make it so you can manipulation both GridFS and non-GridFS collections.  
+I think it is quite achievable, I just need to organize a bit.  
+
 # Todo List
 Gotta love the old trusty todo list to keep track of things to do with this assignment. It worked really well for keeping me on task for my portfolio website, it should be good here too!
 ## Storage
@@ -69,3 +73,5 @@ I think it is time to move onto some other, perhaps more fun, projects
 I lied. There is some more technical backend-y stuff that I want to do.  
 As of right now you have to upload images manually. I want to add some sort of front end so users (literally just me and maybe my girlfriend) can upload.  
 Oh also I mentioned users. I need to add a login with users. Since this is not public (yet?) I only need password.  
+- [ ] Login   
+- [ ] Login determines what images you see  

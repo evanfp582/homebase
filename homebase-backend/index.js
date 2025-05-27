@@ -58,6 +58,19 @@ app.get("/findall/:limit", async (req, res) => {
   res.send(results)
 });
 
+// Route: GET all images that belong to user
+app.get("/findall/:user/:limit", async (req, res) => {
+  const user = req.params.user
+  const limit = Number(req.params.limit)
+  console.log("User: ", user);
+  let results = []
+  const cursor = gfs.find({"user": user}).limit(limit);
+  for await (const doc of cursor) {
+    results.push(doc)
+  } 
+  res.send(results)
+});
+
 /*
 Routes relating to getting thumbnails 
 */
@@ -80,6 +93,19 @@ app.get('/thumbnails', async (req, res) => {
   try {
     const thumbnails = await thumbnailsCollection
       .find({})
+      .toArray();
+    res.json(thumbnails);
+  } catch (err) {
+    res.status(500).send('Error fetching thumbnails');
+  }
+});
+
+// Route: GET all thumbnails belonging to user
+app.get('/thumbnails/:user', async (req, res) => {
+  try {
+    const user = req.params.user
+    const thumbnails = await thumbnailsCollection
+      .find({"user": user})
       .toArray();
     res.json(thumbnails);
   } catch (err) {
