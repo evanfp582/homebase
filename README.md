@@ -65,3 +65,7 @@ I want to create a way to keep a view large images to keep google from begging m
 - [ ] Maybe I ought to do some actual design now to make it look less ugly perhaps I should sketch out a design that I like  
 I think I have this project at a point that I am ok with  
 I think it is time to move onto some other, perhaps more fun, projects  
+
+I lied. There is some more technical backend-y stuff that I want to do.  
+As of right now you have to upload images manually. I want to add some sort of front end so users (literally just me and maybe my girlfriend) can upload.  
+Oh also I mentioned users. I need to add a login with users. Since this is not public (yet?) I only need password.  
