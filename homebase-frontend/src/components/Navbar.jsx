@@ -4,7 +4,7 @@ import { Typography } from "@mui/material";
 import AppBar from '@mui/material/AppBar';
 import Login from "./Login";
 
-const Navbar = ({setFullFilename}) => {
+const Navbar = ({setFullFilename, setUsername}) => {
   const [filename, setFilename] = useState("");
 
   const handleClick = (e) => {
@@ -31,7 +31,7 @@ const Navbar = ({setFullFilename}) => {
         />
         <button type="submit">View Image</button>
       </form>
-      <Login />
+      <Login setActualUsername={setUsername}/>
     </AppBar>
   )
 }

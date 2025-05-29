@@ -4,7 +4,7 @@ import { Grid, Card, CardContent, Typography, Box } from "@mui/material";
 import CardActionArea from '@mui/material/CardActionArea';
 import axios from "axios";
 
-const ImageGrid = ({setFullFilename}) => {
+const ImageGrid = ({setFullFilename, username}) => {
   const [allImgData, setAllImgData] = useState([]);
   const [thumbDict, setThumbDict] = useState(null);
   const [localFilename, setLocalFilename] = useState("");
@@ -12,14 +12,14 @@ const ImageGrid = ({setFullFilename}) => {
   useEffect(() => {
     const fetchAllThumbnails = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/thumbnails`);
+        const res = await axios.get(`http://localhost:5000/thumbnails/${username}`);
         setThumbDict(arrayToDict(res.data));
       } catch (error) {
         console.error("Failed to get thumbnails:", error);
       }
     };
     fetchAllThumbnails();
-  }, []);
+  }, [username]);
 
   const handleClick = (fullFilename) => {
     // e.preventDefault();
@@ -35,14 +35,19 @@ const ImageGrid = ({setFullFilename}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/findall/0");
-        setAllImgData(res.data);
+        if (username){
+          const res = await axios.get(`http://localhost:5000/findall/${username}`);
+          setAllImgData(res.data);
+        }else {
+          setAllImgData();
+        }
+        
       } catch (err) {
         console.error("Error fetching image data:", err);
       }
     }
     fetchData();
-  }, []);
+  }, [username]);
 
   return(<>
   <Box

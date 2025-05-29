@@ -26,6 +26,7 @@ function App() {
   const [paperColor, setPaperColor] = useState(initialTheme.paperColor)
 
   const [selectedFilename, setSelectedFilename] = useState(null);
+  const [username, setUsername] = useState("");
 
   const theme = createTheme({
     palette: {
@@ -67,10 +68,10 @@ function App() {
     }}>
       <ThemeProvider theme={theme}>
         <div className="App" style={{backgroundColor: 'rgb(238, 238, 238)'}}>
-          <Navbar setFullFilename={setSelectedFilename}/>
+          <Navbar setFullFilename={setSelectedFilename} setUsername={setUsername}/>
           <FullImage filename={selectedFilename}/>
           <Separator />
-          <ImageGrid setFullFilename={setSelectedFilename}/>
+          <ImageGrid setFullFilename={setSelectedFilename} username={username}/>
         </div>
       </ThemeProvider>
     </ThemeContext.Provider>

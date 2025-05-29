@@ -73,5 +73,7 @@ I think it is time to move onto some other, perhaps more fun, projects
 I lied. There is some more technical backend-y stuff that I want to do.  
 As of right now you have to upload images manually. I want to add some sort of front end so users (literally just me and maybe my girlfriend) can upload.  
 Oh also I mentioned users. I need to add a login with users. Since this is not public (yet?) I only need password.  
-- [ ] Login   
-- [ ] Login determines what images you see  
+- [X] Login   
+- [X] Login determines what images you see  
+
+Done ????  

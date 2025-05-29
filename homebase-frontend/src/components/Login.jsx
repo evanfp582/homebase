@@ -1,27 +1,45 @@
 import React from "react";
+import { useState, useEffect } from "react";
 
-const Login = () => {
 
-const handleClick = (e) => {
-  e.preventDefault();
-  // setFullFilename(filename);
-  window.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: "smooth",
-  });
-};
+
+const Login = (setActualUsername) => {
+  const [username, setUsername] = useState("")
+  const [loggedIn, setLoggedIn] = useState("")
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+    setLoggedIn(username);
+    setActualUsername["setActualUsername"](username);
+  };
+
+  const handleLogout = (event) => {
+    event.preventDefault();
+    setLoggedIn("");
+    setUsername("");
+    setActualUsername["setActualUsername"]("");  
+  }
 
   return<>
-    <form onSubmit={handleClick}>
+    {!loggedIn ?
+      <form onSubmit={handleLogin}>
         <input
           type="text"
-          // value={filename}
-          // onChange={(e) => setFilename(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           placeholder="Enter User"
         />
         <button type="submit">Login</button>
+      </form> :
+      <form onSubmit={handleLogout}>
+        <input
+          type="text"
+          value={username}
+          readOnly
+        />
+        <button type="submit">Logout</button>
       </form>
+    }
   </>
 }
 

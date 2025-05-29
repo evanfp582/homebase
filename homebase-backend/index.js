@@ -48,23 +48,22 @@ app.get("/image/id/:fileId", (req, res) => {
 });
 
 // Route: GET all images with a limit of 10
-app.get("/findall/:limit", async (req, res) => {
-  const limit = Number(req.params.limit)
-  let results = []
-  const cursor = gfs.find({}).limit(limit);
-  for await (const doc of cursor) {
-    results.push(doc)
-  } 
-  res.send(results)
-});
+// app.get("/findall/:limit", async (req, res) => {
+//   const limit = Number(req.params.limit)
+//   let results = []
+//   const cursor = gfs.find({}).limit(limit);
+//   for await (const doc of cursor) {
+//     results.push(doc)
+//   } 
+//   res.send(results)
+// });
 
 // Route: GET all images that belong to user
-app.get("/findall/:user/:limit", async (req, res) => {
+app.get("/findall/:user", async (req, res) => {
   const user = req.params.user
-  const limit = Number(req.params.limit)
-  console.log("User: ", user);
+  console.log("Get all images belonging to ", user);
   let results = []
-  const cursor = gfs.find({"user": user}).limit(limit);
+  const cursor = gfs.find({"user": user});
   for await (const doc of cursor) {
     results.push(doc)
   } 
@@ -104,6 +103,8 @@ app.get('/thumbnails', async (req, res) => {
 app.get('/thumbnails/:user', async (req, res) => {
   try {
     const user = req.params.user
+    console.log("Username: ", user);
+    
     const thumbnails = await thumbnailsCollection
       .find({"user": user})
       .toArray();
