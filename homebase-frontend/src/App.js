@@ -5,6 +5,7 @@ import Separator from "./components/Separator";
 import Navbar from "./components/Navbar";
 import FullImage from "./components/FullImage";
 import ImageGrid from "./components/ImageGrid";
+import UploadImage from "./components/UploadImage";
 
 export const ThemeContext = createContext();
 
@@ -69,6 +70,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <div className="App" style={{backgroundColor: 'rgb(238, 238, 238)'}}>
           <Navbar setFullFilename={setSelectedFilename} setUsername={setUsername}/>
+          <UploadImage username={username}/>
           <FullImage filename={selectedFilename}/>
           <Separator />
           <ImageGrid setFullFilename={setSelectedFilename} username={username}/>
