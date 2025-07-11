@@ -2,9 +2,19 @@
 Hold media in local Linux server because both google and my C drive is yelling at me to free some space.
 This project helps me learn Linux, networking, Mongo, full stack work, design, image manipulation...
 
+## Ideas 
+Writrting down ideas I have for this project and putting it front and center so that I get motivated and encouraged to do it!
+
+### Kitchen Recipe Pad
+I want to basically take an IPad (I have an old kindle) that I can mount and store in the kitchen that I can send recipes to  
+It will always be on and I can scrolls through the recipe  
+This is real basic tbh, but I want to host it   
+I want the Homebase server to wirelessly send a recipe to the kitchen pad and then the pad will load the recipe botta bing botta boom  
+I want to make this in something not named Python or JavaScript because my Github is littered with python and JS projects   
+
 ## Learning 
 
-### Linus Server
+### Linux Server
 I am learning a bunch of small things. I will document them here so when I get stuck somewhere in teh future I can look back here to get unstuck.  
 Activating a Linux venv in python is source venv/bin/activate.  
 I learned that OpenCV (understandably) need to use a special version if you are using an operating system without a GUI. So that was a little bug that I needed to correct. 
@@ -41,7 +51,6 @@ Node JS backend with Express JS and Mongoose for MongoDB Schemas and nodemon.
 followed this guide to set up https://www.einfochips.com/blog/building-a-full-stack-application-with-react-js-and-node-js/.  
 I have basic website set up 100 times, but I feel like I always follow a different set of commands/guides.  
 
-
 Getting Mongoose and Node JS to play nicely took this guide https://www.mongodb.com/developer/languages/javascript/getting-started-with-mongodb-and-mongoose/  
 
 ### Python
@@ -76,4 +85,12 @@ Oh also I mentioned users. I need to add a login with users. Since this is not p
 - [X] Login   
 - [X] Login determines what images you see  
 
-Done ????  
+Now that I am moved into a new place and have control of the router, I want to actually host this website so I can view my images from anywhere  
+This is a little scary to me because exposing my computer to the big scary World Wide Web, so I need to do some research into safe ways to do this  
+- [ ] Webhosting AND security
+
+## Dash Board
+A little python script to keep track of the services I have running in the background and ensure they are all up and running.  
+MongoDB is the only one right now 
+- [X] Get something up and running that displays status
+- [ ] Actually make it look good and animated in Linux 
