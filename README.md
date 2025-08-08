@@ -19,6 +19,20 @@ I am learning a bunch of small things. I will document them here so when I get s
 Activating a Linux venv in python is source venv/bin/activate.  
 I learned that OpenCV (understandably) need to use a special version if you are using an operating system without a GUI. So that was a little bug that I needed to correct. 
 
+I have had a whole lot of difficulties setting up and learning my Ubuntu linux server. Most of the issues relating to internet/ethernet. 
+I wrote down my issues at the time, but I did not. I am doing this after the fact  
+
+**How to Set Up Ethernet**  
+I think this is supposed to work immediatly, but mine did not  
+I had to check that the ethernet was connected with  
+```cmd
+ip link show
+```
+Where I learned the name of the device was enp6s0, but I noticed the state was DOWN so I figured that was not correct  
+Then I ran `sudo ip link set dev enp6s0` and `sudo netplan apply`  
+
+As for wifi, I do not remmember what I did a while ago, but I guess that is not important now  
+
 ### MongoDB
 I am learning how to set up, host, run, and manage a MongoDB  
 Not just any MongoDB, but a GridFS MongoDB to store my large photos  
