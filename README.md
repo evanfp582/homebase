@@ -33,6 +33,17 @@ Then I ran `sudo ip link set dev enp6s0` and `sudo netplan apply`
 
 As for wifi, I do not remmember what I did a while ago, but I guess that is not important now  
 
+## Servces (including the aforementioned Mongo)
+This is a new concept for me while working with linux and it keeps biting me  
+I keep forgetting to restart the services I need whenver I reboot and it causes errors elsewhere  
+Services I use:  
+`mongod` - Obviously mongo db  
+`dnsmasq` - A local DNS that turns my local IP to the url  
+`nginx` - Web hosting  
+Ensuring `enp6s0` is actually running because I guess ethernet being on is not default  
+
+
+
 ### MongoDB
 I am learning how to set up, host, run, and manage a MongoDB  
 Not just any MongoDB, but a GridFS MongoDB to store my large photos  
