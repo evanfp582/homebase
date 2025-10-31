@@ -3,6 +3,8 @@ import Button from '@mui/material/Button';
 import React, { useState } from 'react';
 import axios from 'axios';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL;
+
 const UploadImage = ({username}) => {
   const [files, setFiles] = useState([]);
 
@@ -15,7 +17,7 @@ const UploadImage = ({username}) => {
     formData.append('user', username);
 
     try {
-      const res = await axios.post('http://localhost:5000/uploadImages', formData, {
+      const res = await axios.post(`${API_BASE_URL}/uploadImages`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

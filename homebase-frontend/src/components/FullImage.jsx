@@ -1,6 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
+const API_BASE_URL = process.env.REACT_APP_API_URL
+
 const FullImage = ({filename}) => {
   const [imageData, setImageData] = useState(null);
   
@@ -9,7 +11,7 @@ const FullImage = ({filename}) => {
 
     const fetchImage = async () => {
       try {
-        setImageData(`http://localhost:5000/image/${filename}`);
+        setImageData(`${API_BASE_URL}/image/${filename}`);
       } catch (err) {
         console.error('Error fetching image:', err);
       }
