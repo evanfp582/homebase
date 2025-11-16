@@ -19,7 +19,7 @@ def connect_to_GridFS():
   gridfsDB = myclient[DATABASE_NAME]
   return gridfsDB
 
-def upload_to_mongo():
+def upload_to_mongo(user: str):
   """Upload all the files in the folder to the thumbnails collection in DB
   Args:
       folder (str): _description_
@@ -50,7 +50,7 @@ def upload_to_mongo():
               continue
 
           # Upload with metadata to tag as compressed
-          thumbnails.insert_one({"thumbnail": data, "originalFileId": existing._id})
+          thumbnails.insert_one({"thumbnail": data, "originalFileId": existing._id, "user": user})
           print(f"Uploaded compressed image: {filename}")
       else:
         print(f"Original image not found in thumbnail collection for: {filename}")
@@ -61,12 +61,14 @@ def parse_args_func():
   """
   parser = argparse.ArgumentParser(description= "Upload to GridFS")
   # parser.add_argument("folder", help="Path to the folder containing files to upload")
+  parser.add_argument("user", help="user that owns the thumbnails")
   return parser.parse_args()
 
 def main():
   args = parse_args_func()
   # folder = args.folder
-  upload_to_mongo()
+  user = args.user
+  upload_to_mongo(user)
   
   
 if __name__ == "__main__":

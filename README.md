@@ -102,6 +102,14 @@ npm run build
 This updates the ./build folder
 Take this folder and place it in the same place but in the linux server ~/projects/homebase_storage/homebase-frontend$
 
+**How to add images (hopefully does not last long because it is awful)**
+1. Download images and put the images all in a folder uncompressed
+2. Execute `python upload_to_gridfs.py PATH_TO_FOLDER USER`
+3. Create image thumbnails by executing `python image_compression PATH_TO_FOLDER python-scripts/compressed_images`. This create a bunch of images at python-scripts/compressed_images
+4. Upload image thumbnails at /compressed_images by executing `python compressed_upload USER`.
+
+Wow what a mess...
+I need to create a python module and actually make this one step where I can just give it a folder of images and it will do all this nonsense
 
 ### Python
 I have written a few scripts  

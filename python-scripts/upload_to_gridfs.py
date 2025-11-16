@@ -21,10 +21,11 @@ def connect_to_GridFS():
   fs = gridfs.GridFS(gridfsDB)
   return fs
 
-def upload_to_mongo(folder: str):
+def upload_to_mongo(folder: str, user:str):
   """Upload all the files in the folder to the GridFS
   Args:
-      folder (str): _description_
+      folder (str): path to folder
+      user (str): User to associate with images uploaded
   """
   fs = connect_to_GridFS()
   
@@ -34,7 +35,7 @@ def upload_to_mongo(folder: str):
     try:
       with open(filepath, 'rb') as f:
         if not fs.find_one({'filename': filename}):
-          fs.put(f.read(), filename=filename)
+          fs.put(f.read(), filename=filename, user=user)
           print(f"Uploaded: {filename}")
           uploaded_count += 1
         else:
@@ -50,15 +51,17 @@ def parse_args_func():
   """
   parser = argparse.ArgumentParser(description= "Upload files in folder to GridFS")
   parser.add_argument("folder", help="Path to the folder containing files to upload")
+  parser.add_argument("user", help="User to associate with the photos")
   return parser.parse_args()
 
 def main():
   args = parse_args_func()
   folder = args.folder
+  user = args.user
   if not os.path.isdir(folder):
     print(f"Error: Folder '{folder}' does not exist.")
     sys.exit(1)
-  upload_to_mongo(folder)
+  upload_to_mongo(folder, user)
   
   
 if __name__ == "__main__":
