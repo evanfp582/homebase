@@ -178,3 +178,7 @@ node_modules
 
 python-scripts/compressed_images/
 images_example/
+
+
+.vscode
+.dist

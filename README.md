@@ -102,14 +102,13 @@ npm run build
 This updates the ./build folder
 Take this folder and place it in the same place but in the linux server ~/projects/homebase_storage/homebase-frontend$
 
-**How to add images (hopefully does not last long because it is awful)**
-1. Download images and put the images all in a folder uncompressed
-2. Execute `python upload_to_gridfs.py PATH_TO_FOLDER USER`
-3. Create image thumbnails by executing `python image_compression PATH_TO_FOLDER python-scripts/compressed_images`. This create a bunch of images at python-scripts/compressed_images
-4. Upload image thumbnails at /compressed_images by executing `python compressed_upload USER`.
-
-Wow what a mess...
-I need to create a python module and actually make this one step where I can just give it a folder of images and it will do all this nonsense
+**How to add images**  
+I have combined all the scripts into one script that just does the whole process  
+The fact I had this initially separated is insane.  
+Now all I need to do to upload images is to run  
+```python
+python ImageUploadProcess PATH_TO_IMAGES USER
+```
 
 ### Python
 I have written a few scripts  
@@ -117,13 +116,9 @@ This new one that I am going to make is super fun-
 Since these images are super large, I am going to be making compressed versions of each photo to display on the page and then the real version will be shown if you click on it  
 I know for sure there exists plenty of available code online to compress an image, BUT, since I just finished my computer vision class, I am going to make my own compressed image by running a filter through the images.
 
-Ok writing this generalized Mongo manipulation script is a bit of a mess.  
-I am trying to make it so you can manipulation both GridFS and non-GridFS collections.  
-I think it is quite achievable, I just need to organize a bit.  
-
 # Todo List
 Gotta love the old trusty todo list to keep track of things to do with this assignment. It worked really well for keeping me on task for my portfolio website, it should be good here too!
-## Storage
+## Evan Photos
 I want to create a way to keep a view large images to keep google from begging me to upgrade my plan
 - [X] MongoDB backend hosted on local linux server
 - [X] Use GridFS to store my very large photos
@@ -147,7 +142,7 @@ Now that I am moved into a new place and have control of the router, I want to a
 This is a little scary to me because exposing my computer to the big scary World Wide Web, so I need to do some research into safe ways to do this  
 - [ ] Webhosting AND security
 
-## Dash Board
+## Dash Board (DEAD PROJECT see KotlinTUI instead)
 A little python script to keep track of the services I have running in the background and ensure they are all up and running.  
 MongoDB is the only one right now 
 - [X] Get something up and running that displays status
