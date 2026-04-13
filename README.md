@@ -42,7 +42,14 @@ Services I use:
 `nginx` - Web hosting  
 Ensuring `enp6s0` is actually running because I guess ethernet being on is not default  
 
+I am now looking more into services.  
+1. Create a service that boots up the homebase storage backend and nginx frontend(already does the ladder)
+2. Make all my services start on launch
+3. Bundle services toegether so they can be started and stopped with ease
 
+**Current limitation**: I created a service called `homebase_storage.service` and when I try to run it it fails to start. I am using quite a basic service that I copied from online so I need to do more digging to see what is actually up.   
+
+**Next up**: Create basic postgreSQL server that is hosted on that machine. This will be for my Perfect Pantry/ Kitchen Notebook app/program/site/api/whatever. The reason I am doing postgreSQL is because I want to and I am already using Mongo for the Evan Images site so might as well mix it up   
 
 ### MongoDB
 I am learning how to set up, host, run, and manage a MongoDB  
