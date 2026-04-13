@@ -47,7 +47,26 @@ I am now looking more into services.
 2. Make all my services start on launch
 3. Bundle services toegether so they can be started and stopped with ease
 
-**Current limitation**: I created a service called `homebase_storage.service` and when I try to run it it fails to start. I am using quite a basic service that I copied from online so I need to do more digging to see what is actually up.   
+I created a service called `homebase_storage.service` located at `/etc/systemd/system/homebase_storage.service` and when I run it with `sudo systemctl start homebase_storage` it starts the backend for Evan Images. I am using quite a basic service that I copied from online, but this is it *without env variables filled in fully*.   
+```bash
+[Unit]
+Description=Backend for Evan Images site
+After=network.target
+
+[Service]
+Environment=NODE_PORT=3001
+Environment=MONGO_HOST=mongodb:...
+Environment=DATABASE_NAME=storage
+Environment=MONGO_URI=mongodb:...
+Environment=MONGO_HOST_AND_NAME=mongodb:...
+Type=simple
+User=evanf
+ExecStart=/usr/bin/node /home/evanf/projects/homebase_storage/homebase-backend/index.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
 
 **Next up**: Create basic postgreSQL server that is hosted on that machine. This will be for my Perfect Pantry/ Kitchen Notebook app/program/site/api/whatever. The reason I am doing postgreSQL is because I want to and I am already using Mongo for the Evan Images site so might as well mix it up   
 
