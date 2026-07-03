@@ -149,12 +149,11 @@ def main():
     print(f"Error: Folder '{folder}' does not exist.")
     sys.exit(1)
     
-  # fs, gridfsDB = connectToGridFS()
-  # uploadFullImages(fs, folder, user)
-  # with tempfile.TemporaryDirectory() as tempDir:
-  
-  compressImage(folder, "C:\\Users\\evanf\\Documents\\projects\\homebase_storage\\python-scripts\\compressed_images")
-  # uploadCompressedImages(fs, gridfsDB, tempDir, user)
+  fs, gridfsDB = connectToGridFS()
+  uploadFullImages(fs, folder, user)
+  with tempfile.TemporaryDirectory() as tempDir:
+    compressImage(folder, tempDir)
+    uploadCompressedImages(fs, gridfsDB, tempDir, user)
 
 if __name__ == "__main__":
   main()
