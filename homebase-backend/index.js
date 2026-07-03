@@ -1,8 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const multer = require('multer');
 const dotenv = require("dotenv");
 const cors = require("cors");
 const { GridFSBucket } = require("mongodb");
+const { GridFsStorage } = require("multer-gridfs-storage");
 const { Readable } = require("stream");
 
 dotenv.config({path: '../.env'});
@@ -10,20 +12,35 @@ const app = express();
 const port = 5000;
 app.use(cors());
 
-let gfs, thumbnailsCollection;
+let gfs, thumbnailsCollection, upload;
 
 mongoose.connect(process.env.MONGO_HOST_AND_NAME);
 
 const conn = mongoose.connection;
 
-conn.once("open", () => {
-  gfs = new GridFSBucket(conn.db, {
-    bucketName: "fs"
-  });
-  console.log("GridFS ready");
+conn.once("open", async () => {
+  console.log("MongoDB connected");
 
-  thumbnailsCollection = conn.db.collection('thumbnails');
-  console.log("thumbnails collection ready");
+  gfs = new GridFSBucket(conn.db, {
+    bucketName: "fs",
+  });
+
+  thumbnailsCollection = conn.db.collection("thumbnails");
+  console.log("GridFS and thumbnails collection ready");
+
+  // Set up multer-gridfs-storage after Mongo is connected
+  const storage = new GridFsStorage({
+    url: process.env.MONGO_HOST_AND_NAME,
+    file: async (req, file) => {
+      return {
+        filename: `${Date.now()}-${file.originalname}`,
+        bucketName: "fs",
+        metadata: {} // Safe: nothing depends on req.body
+      };
+    }
+  });
+
+  upload = multer({ storage });
 });
 
 /*
@@ -45,6 +62,26 @@ app.get("/image/id/:fileId", (req, res) => {
     res.status(404).send("File not found");
   });
   fileStream.pipe(res);
+});
+
+app.post("/uploadImages", (req, res, next) => {
+  if (!upload) {
+    return res.status(503).send("Storage not initialized yet. Try again soon.");
+  }
+
+  upload.array("images")(req, res, (err) => {
+    if (err) {
+      console.error("Upload error:", err);
+      return res.status(500).send("Error uploading images");
+    }
+
+    console.log("Uploaded:", req.files);
+
+    res.status(200).json({
+      message: "Images uploaded successfully!",
+      files: req.files,
+    });
+  });
 });
 
 // Route: GET all images with a limit of 10

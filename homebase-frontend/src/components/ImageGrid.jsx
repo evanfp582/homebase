@@ -4,6 +4,8 @@ import { Grid, Card, CardContent, Typography, Box } from "@mui/material";
 import CardActionArea from '@mui/material/CardActionArea';
 import axios from "axios";
 
+const API_BASE_URL = process.env.REACT_APP_API_URL;
+
 const ImageGrid = ({setFullFilename, username}) => {
   const [allImgData, setAllImgData] = useState([]);
   const [thumbDict, setThumbDict] = useState(null);
@@ -12,7 +14,7 @@ const ImageGrid = ({setFullFilename, username}) => {
   useEffect(() => {
     const fetchAllThumbnails = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/thumbnails/${username}`);
+        const res = await axios.get(`${API_BASE_URL}/thumbnails/${username}`);
         setThumbDict(arrayToDict(res.data));
       } catch (error) {
         console.error("Failed to get thumbnails:", error);
@@ -36,7 +38,7 @@ const ImageGrid = ({setFullFilename, username}) => {
     const fetchData = async () => {
       try {
         if (username){
-          const res = await axios.get(`http://localhost:5000/findall/${username}`);
+          const res = await axios.get(`${API_BASE_URL}/findall/${username}`);
           setAllImgData(res.data);
         }else {
           setAllImgData();
