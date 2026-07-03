@@ -85,8 +85,8 @@ def compressImage(imageFolder: str, tempFolder: str):
     imagePath = os.path.join(baseDir, imageFolder, image)
     img = cv2.imread(imagePath, cv2.IMREAD_COLOR)
     
-    blockHeight = img.shape[0]
-    blockWidth = img.shape[1]
+    blockHeight = img.shape[0] // HEIGHT
+    blockWidth = img.shape[1] // WIDTH
     
     resizedBGR = np.zeros((HEIGHT, WIDTH, 3), dtype=np.uint8)
 
@@ -149,11 +149,12 @@ def main():
     print(f"Error: Folder '{folder}' does not exist.")
     sys.exit(1)
     
-  fs, gridfsDB = connectToGridFS()
-  uploadFullImages(fs, folder, user)
-  with tempfile.TemporaryDirectory() as tempDir:
-    compressImage(folder, tempDir)
-    uploadCompressedImages(fs, gridfsDB, tempDir, user)
+  # fs, gridfsDB = connectToGridFS()
+  # uploadFullImages(fs, folder, user)
+  # with tempfile.TemporaryDirectory() as tempDir:
+  
+  compressImage(folder, "C:\\Users\\evanf\\Documents\\projects\\homebase_storage\\python-scripts\\compressed_images")
+  # uploadCompressedImages(fs, gridfsDB, tempDir, user)
 
 if __name__ == "__main__":
   main()
