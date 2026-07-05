@@ -6,11 +6,15 @@ const cors = require("cors");
 const { GridFSBucket } = require("mongodb");
 const { GridFsStorage } = require("multer-gridfs-storage");
 const { Readable } = require("stream");
+// var fs = require('fs');
+
+// const cv = require("opencv.js");
 
 dotenv.config({path: '../.env'});
 const app = express();
 const port = 5000;
 app.use(cors());
+// app.use(express.json())
 
 let gfs, thumbnailsCollection, upload;
 
@@ -68,32 +72,21 @@ app.post("/uploadImages", (req, res, next) => {
   if (!upload) {
     return res.status(503).send("Storage not initialized yet. Try again soon.");
   }
+  
+  // https://mongodb.github.io/node-mongodb-native/2.2/tutorials/gridfs/streaming/#moving-on
+  // https://medium.com/@allyearmustobey/building-a-file-upload-and-download-system-with-node-js-express-and-mongodb-0336c23af59c
+  // fs.createReadStream("./CharlieKelly.jpg")
+  //   .pipe(gfs.openUploadStream("CharlieKelly.jpg", {
+  //        metadata: { user: 'Evan' }
+  //    }))
+  //   .on('error', function(error) {AuthenticatorAssertionResponse.ifError(error)})
+  //   .on('finish', function() {
+  //     console.log("Done!")
+  //     process.exit(0)
+  //   })
 
-  upload.array("images")(req, res, (err) => {
-    if (err) {
-      console.error("Upload error:", err);
-      return res.status(500).send("Error uploading images");
-    }
-
-    console.log("Uploaded:", req.files);
-
-    res.status(200).json({
-      message: "Images uploaded successfully!",
-      files: req.files,
-    });
-  });
+  return res.status(200).send("Success")
 });
-
-// Route: GET all images with a limit of 10
-// app.get("/findall/:limit", async (req, res) => {
-//   const limit = Number(req.params.limit)
-//   let results = []
-//   const cursor = gfs.find({}).limit(limit);
-//   for await (const doc of cursor) {
-//     results.push(doc)
-//   } 
-//   res.send(results)
-// });
 
 // Route: GET all images that belong to user
 app.get("/findall/:user", async (req, res) => {
@@ -151,6 +144,20 @@ app.get('/thumbnails/:user', async (req, res) => {
   }
 });
 
+// app.delete('/deleteImage/:id', async (req, res) => {
+//   try {
+//     const id = req.params.id
+//     console.log("Deleting image with id", id);
+//   } catch (err) {
+//     res.status(500).send('Error fetching thumbnails');
+//   }
+// })
+
 app.listen(port, () => {
   console.log(`Backend running on http://localhost:${port}`);
 });
+
+// TODO with the upload pictures, it should create a compressed version using OPEN CV
+// function compressImage() {
+
+// }
