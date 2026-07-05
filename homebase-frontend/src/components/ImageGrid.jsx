@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useContext} from "react";
+import {RefreshContext} from "../App"
 import { useState, useEffect } from "react";
 import { Grid, Card, CardContent, Typography, Box } from "@mui/material";
 import CardActionArea from '@mui/material/CardActionArea';
@@ -11,17 +12,20 @@ const ImageGrid = ({setFullFilename, username}) => {
   const [thumbDict, setThumbDict] = useState(null);
   const [localFilename, setLocalFilename] = useState("");
 
+  const { refresh, setRefresh } = useContext(RefreshContext)
+
   useEffect(() => {
     const fetchAllThumbnails = async () => {
       try {
         const res = await axios.get(`${API_BASE_URL}/thumbnails/${username}`);
         setThumbDict(arrayToDict(res.data));
+        setRefresh(false)
       } catch (error) {
         console.error("Failed to get thumbnails:", error);
       }
     };
     fetchAllThumbnails();
-  }, [username]);
+  }, [username, refresh, setRefresh]);
 
   const handleClick = (fullFilename) => {
     // e.preventDefault();
@@ -37,6 +41,7 @@ const ImageGrid = ({setFullFilename, username}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setRefresh(false)
         if (username){
           const res = await axios.get(`${API_BASE_URL}/findall/${username}`);
           setAllImgData(res.data);
@@ -49,7 +54,7 @@ const ImageGrid = ({setFullFilename, username}) => {
       }
     }
     fetchData();
-  }, [username]);
+  }, [username, refresh, setRefresh]);
 
   return(<>
   <Box

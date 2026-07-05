@@ -18,6 +18,18 @@ const initialTheme = {
   paperColor: {r: 224, g: 224, b: 224}
 }
 
+export const RefreshContext = createContext();
+
+const RefreshContextProvider = ({ children }) => {
+    const [refresh, setRefresh] = useState(false);
+
+    return (
+        <RefreshContext.Provider value={{ refresh, setRefresh }}>
+            {children}
+        </RefreshContext.Provider>
+    );
+};
+
 function App() {
   const [primaryColor, setPrimaryColor] = useState(initialTheme.primaryColor);
   const [secondaryColor, setSecondaryColor] = useState(initialTheme.secondaryColor);
@@ -70,10 +82,12 @@ function App() {
       <ThemeProvider theme={theme}>
         <div className="App" style={{backgroundColor: 'rgb(238, 238, 238)'}}>
           <Navbar setFullFilename={setSelectedFilename} setUsername={setUsername}/>
+          <RefreshContextProvider>
           <UploadImage username={username}/>
           <FullImage filename={selectedFilename}/>
           <Separator />
           <ImageGrid setFullFilename={setSelectedFilename} username={username}/>
+          </RefreshContextProvider>
         </div>
       </ThemeProvider>
     </ThemeContext.Provider>

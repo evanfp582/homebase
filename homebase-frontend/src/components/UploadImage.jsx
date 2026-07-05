@@ -1,12 +1,14 @@
 import { Typography } from "@mui/material";
 import Button from '@mui/material/Button';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
+import { RefreshContext } from "../App";
 
 const API_BASE_URL = process.env.REACT_APP_API_URL;
 
 const UploadImage = ({username}) => {
   const [file, setFile] = useState(null);
+   const { setRefresh } = useContext(RefreshContext);
 
   const handleFile = (event) => {
     setFile(event.target.files[0]);
@@ -36,13 +38,15 @@ const UploadImage = ({username}) => {
           console.log('other error: ', err);
         }
       });
+      setFile(null)
+      setRefresh(true)
   };
 
   return<>
   {username ? <>
     <Typography>Here I will Implement a way to upload new images/ image folders</Typography>
     <Typography>It will need to get image(s), create thumbnails, upload to database, and display image</Typography>
-    <input type="file" multiple onChange={handleFile} />
+    <input type="file" multiple value={file ? file.filename : ""} onChange={handleFile} />
     <Button variant="outlined" onClick={fileUploadHandler} >Upload Images</Button>
     </> :
     <Typography>Log in to upload images</Typography>}
