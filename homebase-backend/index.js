@@ -6,6 +6,9 @@ const cors = require("cors");
 const { GridFSBucket } = require("mongodb");
 const { GridFsStorage } = require("multer-gridfs-storage");
 const { Readable } = require("stream");
+
+const imageRoutes = require("./routes/image")
+
 // var fs = require('fs');
 
 // const cv = require("opencv.js");
@@ -14,6 +17,7 @@ dotenv.config({path: '../.env'});
 const app = express();
 const port = 5000;
 app.use(cors());
+app.use("/api/image", imageRoutes)
 // app.use(express.json())
 
 let gfs, thumbnailsCollection, upload;
@@ -68,25 +72,36 @@ app.get("/image/id/:fileId", (req, res) => {
   fileStream.pipe(res);
 });
 
-app.post("/uploadImages", (req, res, next) => {
-  if (!upload) {
-    return res.status(503).send("Storage not initialized yet. Try again soon.");
-  }
+// app.post("/uploadImages", upload.single("file"), async (req, res)=> {
+//   if (!upload) {
+//     return res.status(503).send("Storage not initialized yet. Try again soon.");
+//   }
   
-  // https://mongodb.github.io/node-mongodb-native/2.2/tutorials/gridfs/streaming/#moving-on
-  // https://medium.com/@allyearmustobey/building-a-file-upload-and-download-system-with-node-js-express-and-mongodb-0336c23af59c
-  // fs.createReadStream("./CharlieKelly.jpg")
-  //   .pipe(gfs.openUploadStream("CharlieKelly.jpg", {
-  //        metadata: { user: 'Evan' }
-  //    }))
-  //   .on('error', function(error) {AuthenticatorAssertionResponse.ifError(error)})
-  //   .on('finish', function() {
-  //     console.log("Done!")
-  //     process.exit(0)
-  //   })
+//   let {file} =  req
+//   console.log(file)
 
-  return res.status(200).send("Success")
-});
+//   let {fieldname, originalname, mimetype, buffer} = file
+
+//   let newFile = new File({
+//     filename: file.originalname,
+//     contentType: mimetype,
+//     length: buffer.length,
+//   })
+
+//   // https://mongodb.github.io/node-mongodb-native/2.2/tutorials/gridfs/streaming/#moving-on
+//   // https://medium.com/@allyearmustobey/building-a-file-upload-and-download-system-with-node-js-express-and-mongodb-0336c23af59c
+//   fs.createReadStream("./CharlieKelly.jpg")
+//     .pipe(gfs.openUploadStream("CharlieKelly.jpg", {
+//          metadata: { user: 'Evan' }
+//      }))
+//     .on('error', function(error) {AuthenticatorAssertionResponse.ifError(error)})
+//     .on('finish', function() {
+//       console.log("Done!")
+//       process.exit(0)
+//     })
+
+//   return res.status(200).send("Success")
+// });
 
 // Route: GET all images that belong to user
 app.get("/findall/:user", async (req, res) => {
