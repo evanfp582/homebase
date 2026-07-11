@@ -1,10 +1,10 @@
 // https://www.youtube.com/watch?v=OvbRLY1QRIk
 const mongoose = require('mongoose')
-const { GridFsStorage } = require('multer-gridfs-storage')
 const router = require('express').Router()
 const multer = require('multer')
-const crypto = require('crypto')
 const path = require('path')
+const sharp = require("sharp");
+
 require('dotenv').config({path: '../.env'});
 
 const mongoURI = process.env.MONGO_HOST_AND_NAME;
@@ -14,38 +14,36 @@ const conn = mongoose.createConnection(mongoURI, {
 }) 
 
 let gfs;
+let thumbnailsCollection;
 conn.once('open', () => {
   gfs = new mongoose.mongo.GridFSBucket(conn.db, {
-    bucketName: 'images',
+    bucketName: 'fs',
   });
+  thumbnailsCollection = conn.db.collection("thumbnails");
 });
 
-const storage = new GridFsStorage({
-  url: mongoURI,
-  options: {useUnifiedTopology: true},
-  file: (req, file) => {
-    return new Promise((resolve, reject) => {
-      crypto.randomBytes(16, (err, buf) => {
-        if (err) {
-          return reject(err)
-        }
-        const filename = file.originalname
-        const fileInfo = {
-          filename: filename, bucketName: 'fs', metadata: {user: 'Evan'}
-        }
-        resolve(fileInfo)
-      })
-    })
-  }
-})
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: {fileSize: 20000000},
+    fileFilter(req, file, cb) {
+        checkFileType(file, cb);
+    }
+});
 
-const store = multer({
-  storage,
-  limits: {fileSize: 20000000},
-  fileFilter: function(req, file, cb){
-    checkFileType(file, cb)
-  }
-})
+function uploadBuffer(buffer, filename, metadata = {}) {
+  return new Promise((resolve, reject) => {
+    const uploadStream = gfs.openUploadStream(filename, {metadata});
+    uploadStream.on("error", reject);
+    uploadStream.on("finish", () => {
+      resolve({
+        _id: uploadStream.id,
+        filename: uploadStream.filename,
+        metadata
+      });
+    });
+    uploadStream.end(buffer);
+  });
+}
 
 function checkFileType(file, cb) {
   // https://youtu.be/9Qzmri1WaaE?t=1515
@@ -61,44 +59,39 @@ function checkFileType(file, cb) {
   cb('filetype');
 }
 
-function createThumbnail() {
-  return
-}
+router.post("/upload", upload.single("image"), async (req, res) => {
+  try {
+    const originalBuffer = req.file.buffer;
+    const originalFile = await uploadBuffer(
+        originalBuffer,
+        req.file.originalname,
+        { user: "Evan"}
+    );
 
-const uploadMiddleware = (req, res, next) => {
-  // console.log("req: ", req);
-  
-  const upload = store.single('image');
-  upload(req, res, function (err) {
-    if (err instanceof multer.MulterError) {
-      return res.status(400).send('File too large');
-    } else if (err) {
-      // check if our filetype error occurred
-      if (err === 'filetype') return res.status(400).send('Image files only');
-      // An unknown error occurred when uploading.
-      return res.sendStatus(500);
-    }
-    // all good, proceed
-    console.log("All good, proceed");
+    const thumbBuffer = await sharp(originalBuffer)
+      .resize({
+          width: 100,
+          height: 100,
+          fit: "cover"
+      })
+      .jpeg({ quality: 85 })
+      .toBuffer();
     
-    next();
+    const thumbResult = await thumbnailsCollection.insertOne({
+      originalFileId: originalFile._id,
+      user: "Evan",
+      thumbnail: thumbBuffer
   });
-};
 
-router.post('/upload/', uploadMiddleware, async (req, res) => {
-  // get the .file property from req that was added by the upload middleware
-  const { file } = req;
-  // and the id of that new image file
-  const { id } = file;
-  // we can set other, smaller file size limits on routes that use the upload middleware
-  // set this and the multer file size limit to whatever fits your project
-  if (file.size > 5000000) {
-    // if the file is too large, delete it and send an error
-    deleteImage(id);
-    return res.status(400).send('file may not exceed 5mb');
+    res.json({
+        original: originalFile._id,
+        thumbnail: thumbResult._id
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
   }
-  console.log('uploaded file: ', file);
-  return res.send(file.id);
 });
 
 const deleteImage = (id) => {

@@ -68,7 +68,7 @@ def uploadFullImages(fs: gridfs.GridFS, folder: str, user: str):
         print(f"Error uploading {filename}: {e}")
   print(f"Upload complete. Total images uploaded: {uploadCount}")
 
-def compressImage(imageFolder: str, tempFolder: str):
+def compressImages(imageFolder: str, tempFolder: str):
   """Compress the images found at imageFolder and move them to tempFolder
     Moves a block throughout the image, taking a summation of pixels to compress the image
   Args:
@@ -101,6 +101,33 @@ def compressImage(imageFolder: str, tempFolder: str):
     cv2.imwrite(os.path.join(tempFolder, image), resizedBGR)
     uploadCount += 1
   print(f"Compressed {uploadCount} images")
+  
+def compressImage(imageData: str):
+  """Compress the image data and return it
+    Moves a block throughout the image, taking a summation of pixels to compress the image
+  Args:
+      imageData (str): Image data
+  """
+  HEIGHT = 100
+  WIDTH = 100
+  
+  npArray = np.fromstring(imageData, np.uint8)
+  img = cv2.imdecode(npArray, cv2.CV_LOAD_IMAGE_COLOR)
+    
+  blockHeight = img.shape[0] // HEIGHT
+  blockWidth = img.shape[1] // WIDTH
+  
+  resizedBGR = np.zeros((HEIGHT, WIDTH, 3), dtype=np.uint8)
+
+  for c in range(3):
+    for i in range(HEIGHT):
+      for j in range(WIDTH):
+        y0, y1 = i * blockHeight, (i + 1) * blockHeight
+        x0, x1 = j * blockWidth, (j + 1) * blockWidth
+        block = img[y0:y1, x0:x1, c]
+        resizedBGR[i, j, c] = np.mean(block).astype(np.uint8)
+  
+  return resizedBGR
 
 def uploadCompressedImages(fs: gridfs.GridFS, db, folder: str, user: str):
   """Upload the compressed images to the database's thumbnails table
@@ -152,7 +179,7 @@ def main():
   fs, gridfsDB = connectToGridFS()
   uploadFullImages(fs, folder, user)
   with tempfile.TemporaryDirectory() as tempDir:
-    compressImage(folder, tempDir)
+    compressImages(folder, tempDir)
     uploadCompressedImages(fs, gridfsDB, tempDir, user)
 
 if __name__ == "__main__":
