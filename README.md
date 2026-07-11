@@ -128,7 +128,9 @@ npm run build
 This updates the ./build folder
 Take this folder and place it in the same place but in the linux server ~/projects/homebase_storage/homebase-frontend$
 
-**How to add images**  
+Sometimes you need to hard clear cache and refresh the browser to actually see the changes, you don't actually need to update any thing with Nginx
+
+**How to add a bunch of images**  
 I have combined all the scripts into one script that just does the whole process  
 The fact I had this initially separated is insane.  
 Now all I need to do to upload images is to run  
@@ -167,6 +169,11 @@ Oh also I mentioned users. I need to add a login with users. Since this is not p
 Now that I am moved into a new place and have control of the router, I want to actually host this website so I can view my images from anywhere  
 This is a little scary to me because exposing my computer to the big scary World Wide Web, so I need to do some research into safe ways to do this  
 - [ ] Webhosting AND security
+
+### Big update
+I can now upload individual photos to the database from the frontend  
+It was a pain in the ass, but I do have it working and live right now! 
+
 
 ## Dash Board (DEAD PROJECT see KotlinTUI instead)
 A little python script to keep track of the services I have running in the background and ensure they are all up and running.  
